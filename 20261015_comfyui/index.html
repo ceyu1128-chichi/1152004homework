@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComfyUI 圖生圖作業</title>
+
+  <!-- 外觀設定：只有這幾行 -->
+  <style>
+    body {
+      max-width: 800px;      /* 內容最寬 800 像素 */
+      margin: 0 auto;        /* 置中 */
+      padding: 16px;
+      font-family: "Microsoft JhengHei", sans-serif;
+      line-height: 1.7;
+    }
+    img {
+      width: 100%;           /* 圖片寬度跟著畫面縮放 */
+      border: 1px solid #ccc;
+    }
+    pre {
+      background: #f0f0f0;   /* 提示詞的灰色底 */
+      padding: 12px;
+      white-space: pre-wrap; /* 太長自動換行 */
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>ComfyUI 圖生圖作業</h1>
+  <p>元智大學 資訊傳播系　星羽</p>
+
+  <!-- 1. 原圖 -->
+  <h2>1. 原圖</h2>
+  <img src="images/original.jpg" alt="原圖">
+  <p>學生證大頭照</p>
+
+  <!-- 2. 生成的圖 -->
+  <h2>2. 生成的圖</h2>
+  <img src="images/result.png" alt="生成的圖">
+
+  <!-- 3. 工作流截圖（兩張） -->
+  <h2>3. 完整工作流截圖</h2>
+  <p>外層：</p>
+  <img src="images/workflow-outer.png" alt="工作流外層">
+  <p>子圖內部：</p>
+  <img src="images/workflow-inner.png" alt="工作流子圖內部">
+  <p>把 Z-Image Turbo 的文字生圖範本改成圖生圖：加入「載入圖片 → 將影像縮放至總像素數 → VAE 編碼」，接到 KSampler 的潛在空間影像。</p>
+  <p><a href="workflow.json" download>下載工作流 JSON 檔</a></p>
+
+  <!-- 4. 提示詞 -->
+  <h2>4. 提示詞</h2>
+  <p><b>正向提示詞：</b></p>
+  <pre>classical oil painting portrait, Renaissance style, rich warm colors, visible brush strokes, dark elegant background, soft dramatic side lighting, museum masterpiece, preserve the original facial features</pre>
+  <p><b>負向提示詞：</b></p>
+  <pre>無（Z-Image Turbo 範本以「條件設定（歸零）」節點取代負向提示詞，cfg 為 1.0 時負向提示詞不會作用）</pre>
+  <p><b>主要參數：</b>去雜訊強度 0.80、步驟數 8、cfg 1.0、取樣器 res_multistep、排程器 simple</p>
+
+  <!-- 5. 心得 -->
+  <h2>5. 個人心得</h2>
+  <p>這次作業原本以為只要輸入提示詞就好，實際做才發現我載入的 Z-Image Turbo 範本是「文字生圖」，要自己加上「載入圖片」、「縮放」和「VAE 編碼」節點，接到 KSampler 的潛在空間影像，才能變成圖生圖。過程中卡了好幾次：一開始線其實接在舊的空白潛空間節點上，刪掉後才發現沒接好；後來又把提示詞打在節點標題上，結果生成時用的還是範本預設的提示詞。這讓我理解到，ComfyUI 的資料是沿著線流動的，要看清楚每條線從哪裡來，才知道模型真正讀到什麼。</p>
+  <p>調參數時，去雜訊強度的影響最明顯：0.5 時幾乎看不出變化，提高到 0.8 風格才比較明顯，但臉也會越來越不像本人，需要在風格和相似度之間取捨。</p>
+
+</body>
+</html>
