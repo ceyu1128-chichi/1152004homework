@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>W1 類似題測驗｜我的第一個網頁</title>
+<style>
+  :root{
+    --bg:#f4f7f5; --card:#ffffff; --ink:#1f2a27; --muted:#5f6f6a;
+    --accent:#2f8f6b; --accent-soft:#e3f3ec; --blue:#4a6fd1; --blue-soft:#e6ecfb;
+    --ok:#1f8a4c; --ok-soft:#e2f5e9; --bad:#c2413b; --bad-soft:#fbe7e5;
+    --warn:#b7791f; --line:#d9e2de; --code:#1e2b33;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.65}
+  header{background:linear-gradient(120deg,#2f8f6b,#4a6fd1);color:#fff;padding:22px 16px 26px}
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px}
+  header h1{margin:4px 0 6px;font-size:1.45rem;letter-spacing:.02em}
+  header .meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.92rem;opacity:.95}
+  header .meta span{background:rgba(255,255,255,.16);padding:2px 10px;border-radius:999px}
+  main{margin-top:-14px;padding-bottom:40px}
+  .card{background:var(--card);border-radius:16px;box-shadow:0 4px 18px rgba(30,60,50,.08);padding:22px 20px}
+  .progress-row{display:flex;justify-content:space-between;align-items:center;font-size:.9rem;color:var(--muted);margin-bottom:8px}
+  .bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:18px}
+  .bar>div{height:100%;background:var(--accent);width:0;transition:width .3s}
+  .tag{display:inline-block;font-size:.8rem;background:var(--blue-soft);color:var(--blue);padding:2px 10px;border-radius:99px;margin-bottom:8px}
+  .tag.weak{background:#fff4e0;color:var(--warn)}
+  .q{font-size:1.1rem;font-weight:600;margin:4px 0 12px}
+  pre{background:var(--code);color:#e6f1ec;padding:12px 14px;border-radius:10px;overflow-x:auto;font-size:.9rem;margin:0 0 14px;
+    font-family:Consolas,"SFMono-Regular",Menlo,monospace;white-space:pre}
+  .opts{display:grid;gap:10px}
+  .opt{text-align:left;border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;font-size:1rem;cursor:pointer;
+    font-family:inherit;color:inherit;display:flex;gap:10px;align-items:flex-start;transition:border-color .15s,background .15s}
+  .opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+  .opt .lt{font-weight:700;color:var(--accent);min-width:1.4em}
+  .opt code{font-family:Consolas,Menlo,monospace;background:#f0f3f2;padding:0 4px;border-radius:4px}
+  .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+  .opt:disabled{cursor:default}
+  .explain{margin-top:16px;border-radius:12px;padding:14px 16px;display:none}
+  .explain.show{display:block}
+  .explain.ok{background:var(--ok-soft);border-left:5px solid var(--ok)}
+  .explain.no{background:var(--bad-soft);border-left:5px solid var(--bad)}
+  .explain h3{margin:0 0 6px;font-size:1rem}
+  .explain p{margin:6px 0}
+  .explain .life{background:rgba(255,255,255,.7);border-radius:8px;padding:8px 10px;margin-top:8px}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+  .btn{border:none;border-radius:10px;padding:10px 18px;font-size:.98rem;cursor:pointer;font-family:inherit;font-weight:600}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.ghost{background:#eef2f0;color:var(--ink)}
+  .btn:disabled{opacity:.4;cursor:default}
+  .dots{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:16px}
+  .dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:#fff;font-size:.8rem;cursor:pointer;font-family:inherit}
+  .dot.cur{border-color:var(--blue);color:var(--blue);font-weight:700}
+  .dot.r{background:var(--ok);border-color:var(--ok);color:#fff}
+  .dot.w{background:var(--bad);border-color:var(--bad);color:#fff}
+  .result{text-align:center}
+  .score{font-size:3rem;font-weight:800;color:var(--accent);margin:6px 0}
+  .review{text-align:left;margin-top:18px}
+  .review li{margin-bottom:10px}
+  .review .ans{color:var(--ok);font-weight:600}
+  .hidden{display:none}
+  footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:18px}
+  @media (max-width:480px){ header h1{font-size:1.2rem} .q{font-size:1.02rem} .card{padding:18px 14px} }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div style="font-size:.9rem;opacity:.9">Web programming｜W1 開機！我的第一個網頁</div>
+    <h1>W1 類似題互動測驗（10 題）</h1>
+    <div class="meta"><span>學號：1152004</span><span>姓名：黃靖淇</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="quiz" class="card">
+    <div class="progress-row"><span id="pText">第 1 / 10 題</span><span id="sText">已答對 0 題</span></div>
+    <div class="bar"><div id="pBar"></div></div>
+    <div id="tags"></div>
+    <div class="q" id="qText"></div>
+    <pre id="qCode" class="hidden"></pre>
+    <div class="opts" id="opts"></div>
+    <div class="explain" id="explain"></div>
+    <div class="nav">
+      <button class="btn ghost" id="prev">← 上一題</button>
+      <button class="btn primary" id="next">下一題 →</button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <section id="result" class="card result hidden">
+    <h2 style="margin:0">測驗完成！</h2>
+    <div class="score" id="finalScore"></div>
+    <p id="comment" style="margin:0;color:var(--muted)"></p>
+    <div class="review" id="review"></div>
+    <div class="nav" style="justify-content:center;flex-wrap:wrap">
+      <button class="btn ghost" id="retryWrong">只重做答錯的題目</button>
+      <button class="btn primary" id="restart">全部重新作答</button>
+    </div>
+  </section>
+
+  <footer>題目依據 W1 課程心智圖與我的學習結果記事設計｜標示「⚠️易錯」的題目是我自己需要加強的觀念</footer>
+</main>
+
+<script>
+const QUESTIONS = [
+  {
+    concept:"網頁三層結構", weak:false,
+    q:"小明做了一個「抽籤」網頁，希望使用者按下按鈕後，畫面隨機顯示一個籤詩。這個「按下去會做事」的功能，主要要用哪一種語言來寫？",
+    opts:["HTML（HyperText Markup Language，超文字標記語言）","CSS（Cascading Style Sheets，階層式樣式表）","JS（JavaScript）","UTF-8 編碼設定"],
+    ans:2,
+    why:"按鈕被點擊後要「做事情」，屬於互動邏輯，是 JavaScript 的工作。HTML 只負責放一顆按鈕在那裡（內容與架構），CSS 只負責按鈕長什麼樣子（顏色、大小），UTF-8 跟文字編碼有關、跟互動無關。",
+    life:"網頁就像一個人：HTML 是骨架，CSS 是衣服，JS 是動作。骨架讓你有手，衣服讓手好看，但「舉手抽籤」這個動作要靠 JS。"
+  },
+  {
+    concept:"運作機制", weak:false,
+    q:"你在網址列輸入網址並按下 Enter 之後，伺服器（Server）實際傳回給瀏覽器（Browser）的是什麼？",
+    opts:["一張已經畫好的網頁截圖","一份寫滿標籤的純文字檔，由瀏覽器一行一行翻譯成畫面","一個需要安裝的應用程式","一段影片串流"],
+    ans:1,
+    why:"伺服器回傳的是 HTML 純文字檔（裡面全是標籤），真正把它「畫」成你看到的畫面的是瀏覽器。所以同一份 HTML 在不同瀏覽器看起來可能有些微差異。",
+    life:"像去手搖飲店點餐：你（使用者）填點單，店員（伺服器）把寫滿代號的貼紙交出去，製飲人員（瀏覽器）看貼紙一項一項做出飲料（畫面）。"
+  },
+  {
+    concept:"檔名三大規矩", weak:true,
+    q:"老師要求網站首頁檔案要能直接被當成首頁打開。以下哪個檔名完全符合「檔名三大規矩」？",
+    opts:["<code>Index.html</code>","<code>my home.html</code>","<code>index.html</code>","<code>index.html.txt</code>"],
+    ans:2,
+    why:"三大規矩：①首頁必須叫 index.html ②全部英文小寫、不要空格 ③副檔名必須是 .html 結尾。Index.html 有大寫 I；my home.html 有空格又不是 index；index.html.txt 實際副檔名是 .txt，會被當成文字檔。",
+    life:"就像寄包裹的地址要照格式寫，郵差（伺服器）才找得到。少一個字或多一個空格，包裹就送不到。"
+  },
+  {
+    concept:"標籤（Tag）", weak:true,
+    q:"下列哪一行段落標籤寫法是正確的？",
+    opts:["<code>&lt;p&gt;今天學 HTML&lt;p/&gt;</code>","<code>&lt;p&gt;今天學 HTML&lt;/p&gt;</code>","<code>&lt;/p&gt;今天學 HTML&lt;p&gt;</code>","<code>&lt;p&gt;今天學 HTML&lt;\\p&gt;</code>"],
+    ans:1,
+    why:"標籤是用尖括號包起來的名字，有「開始標籤」和「結束標籤」。結束標籤是在名字「前面」多一條斜線 /，寫成 &lt;/p&gt;。斜線放後面（&lt;p/&gt;）、用反斜線（\\）、或開始結束顛倒都是錯的。",
+    life:"像括號「（ ）」一樣要成對，而且「開」在前、「關」在後；結束標籤的斜線就像在門上掛「已關門」的牌子。"
+  },
+  {
+    concept:"巢狀結構（Nesting）", weak:true,
+    q:"想讓段落裡面有一個超連結，下列哪一種寫法的巢狀順序正確？",
+    opts:[
+      "<code>&lt;p&gt;&lt;a href=\"#\"&gt;點我&lt;/p&gt;&lt;/a&gt;</code>",
+      "<code>&lt;a href=\"#\"&gt;&lt;p&gt;點我&lt;/a&gt;&lt;/p&gt;</code>",
+      "<code>&lt;p&gt;&lt;a href=\"#\"&gt;點我&lt;/a&gt;&lt;/p&gt;</code>",
+      "<code>&lt;p&gt;&lt;a href=\"#\"&gt;點我&lt;/p&gt;</code>"
+    ],
+    ans:2,
+    why:"巢狀規則是「後開的先關」：先開 &lt;p&gt;、再開 &lt;a&gt;，所以要先關 &lt;/a&gt;、最後才關 &lt;/p&gt;。A、B 關閉順序交叉了；D 少了 &lt;/a&gt;。",
+    life:"像俄羅斯娃娃：最後放進去的小娃娃要最先拿出來，不能大娃娃還沒打開就想把小娃娃關回去。"
+  },
+  {
+    concept:"屬性（Attribute）", weak:false,
+    q:"看下面這行程式碼，哪一個部分是「屬性」？",
+    code:'<a href="https://www.yzu.edu.tw">元智大學</a>',
+    opts:["<code>&lt;a&gt;</code>","<code>href=\"https://www.yzu.edu.tw\"</code>","<code>元智大學</code>","<code>&lt;/a&gt;</code>"],
+    ans:1,
+    why:"屬性寫在「開始標籤」裡面，格式是 名字=\"值\"。這裡 href 是屬性名稱，網址是它的值，用來告訴超連結要跳去哪裡。&lt;a&gt; 和 &lt;/a&gt; 是標籤，「元智大學」是內容；開始標籤＋內容＋結束標籤合起來才叫「元素（Element）」。",
+    life:"元素像一個貼好標籤的盒子，屬性就是盒子上的「寄送地址」貼紙：盒子本身是超連結，地址告訴它要送去哪裡。"
+  },
+  {
+    concept:"空元素（Empty Element）", weak:false,
+    q:"下列哪一個標籤是「空元素」，不需要寫結束標籤？",
+    opts:["<code>&lt;p&gt;</code>","<code>&lt;h1&gt;</code>","<code>&lt;br&gt;</code>","<code>&lt;title&gt;</code>"],
+    ans:2,
+    why:"空元素沒有內容可以包，所以不需要結束標籤，例如 &lt;br&gt;（換行）和 &lt;hr&gt;（水平分隔線）。&lt;p&gt;、&lt;h1&gt;、&lt;title&gt; 都要包住文字，必須成對寫。",
+    life:"&lt;br&gt; 就像按一下 Enter 鍵：它只是一個「動作記號」，裡面沒有東西要裝，所以不用「關起來」。"
+  },
+  {
+    concept:"HTML 基本骨架", weak:false,
+    q:"同學的網頁打開後，中文全部變成「å¤§å®¶å¥½」這種亂碼，英文卻正常。他最可能在 &lt;head&gt; 裡漏寫了哪一行？",
+    opts:["<code>&lt;!DOCTYPE html&gt;</code>","<code>&lt;meta charset=\"UTF-8\"&gt;</code>","<code>&lt;title&gt;我的網頁&lt;/title&gt;</code>","<code>&lt;body&gt;</code>"],
+    ans:1,
+    why:"charset=\"UTF-8\" 是在設定編碼，UTF-8 全名是 Unicode Transformation Format – 8-bit，能正確顯示中文。沒有它，瀏覽器可能用錯誤的編碼讀檔，中文就變亂碼。&lt;!DOCTYPE html&gt; 是宣告 HTML5 文件，&lt;title&gt; 是分頁標題，&lt;body&gt; 放畫面內容，都跟亂碼無關。",
+    life:"像拿到一封外文信：如果不先講好「這封信用中文寫」，讀信的人用錯字典查，就會讀成一堆看不懂的字。"
+  },
+  {
+    concept:"開發工具與環境", weak:false,
+    q:"你在 VS Code（Visual Studio Code）改了網頁內容，希望一按存檔，瀏覽器就自動重新整理顯示最新結果。應該使用哪個工具？",
+    opts:["瀏覽器開發工具（F12）","Live Server 擴充功能","記事本","檔案總管的「重新命名」"],
+    ans:1,
+    why:"Live Server（作者 Ritwick Dey）是 VS Code 的擴充功能，存檔後會自動幫你重新整理瀏覽器。F12 開發者工具是用來檢查元素、看原始碼、除錯的，不會自動重新整理；記事本和重新命名都沒有這個功能。",
+    life:"Live Server 像餐廳的「出餐叫號螢幕」：廚房（VS Code）一做好，螢幕（瀏覽器）就自動更新，不用你一直跑去問好了沒。"
+  },
+  {
+    concept:"開發除錯", weak:true,
+    q:"小華在記事本寫好網頁存成「index.html」，但雙擊後卻是用記事本打開，看到的還是一堆標籤原文。最可能的原因和處理方式是？",
+    opts:[
+      "HTML 語法寫錯了，要重寫整份檔案",
+      "電腦沒有網路，要連上網路才能打開",
+      "檔案其實是 index.html.txt，要打開「顯示副檔名」設定確認並改掉 .txt",
+      "要把檔名改成 INDEX.HTML 全大寫"
+    ],
+    ans:2,
+    why:"Windows 預設會隱藏副檔名，記事本存檔時又自動加上 .txt，所以看起來叫 index.html，實際上是 index.html.txt，電腦就把它當文字檔。打開「顯示副檔名」設定就能看到並修正。語法錯誤不會讓它變成用記事本開；本機檔案不需要網路；全大寫則違反檔名規矩。",
+    life:"就像一個便當盒外面又套了一個「文具」紙袋：裡面明明是便當，但大家看袋子就以為是文具。把外面的 .txt 紙袋拆掉就對了。"
+  }
+];
+
+const L = ["A","B","C","D"];
+let cur = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let order = QUESTIONS.map((_,i)=>i);
+
+const $ = id => document.getElementById(id);
+
+function render(){
+  const qi = order[cur];
+  const item = QUESTIONS[qi];
+  $("pText").textContent = `第 ${cur+1} / ${order.length} 題`;
+  $("pBar").style.width = ((cur+1)/order.length*100)+"%";
+  const correctCount = order.filter(i=>answers[i]!==null && answers[i]===QUESTIONS[i].ans).length;
+  $("sText").textContent = `已答對 ${correctCount} 題`;
+
+  $("tags").innerHTML = `<span class="tag">第 ${qi+1} 題｜${item.concept}</span>` +
+    (item.weak ? ` <span class="tag weak">⚠️易錯</span>` : "");
+  $("qText").innerHTML = item.q;
+  if(item.code){ $("qCode").textContent = item.code; $("qCode").classList.remove("hidden"); }
+  else { $("qCode").classList.add("hidden"); }
+
+  const box = $("opts"); box.innerHTML = "";
+  item.opts.forEach((o,oi)=>{
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.innerHTML = `<span class="lt">${L[oi]}</span><span>${o}</span>`;
+    b.onclick = ()=>choose(qi,oi);
+    if(answers[qi]!==null){
+      b.disabled = true;
+      if(oi===item.ans) b.classList.add("correct");
+      else if(oi===answers[qi]) b.classList.add("wrong");
+    }
+    box.appendChild(b);
+  });
+
+  const ex = $("explain");
+  if(answers[qi]!==null){
+    const ok = answers[qi]===item.ans;
+    ex.className = "explain show " + (ok?"ok":"no");
+    ex.innerHTML = `<h3>${ok?"✅ 答對了！":"❌ 再想想～正確答案是 "+L[item.ans]}</h3>
+      <p>${item.why}</p><div class="life">💡 生活比喻：${item.life}</div>`;
+  } else { ex.className = "explain"; ex.innerHTML = ""; }
+
+  $("prev").disabled = cur===0;
+  $("next").textContent = cur===order.length-1 ? "看結果 ✓" : "下一題 →";
+  $("next").disabled = answers[qi]===null;
+
+  const dots = $("dots"); dots.innerHTML = "";
+  order.forEach((i,k)=>{
+    const d = document.createElement("button");
+    d.className = "dot" + (k===cur?" cur":"") + (answers[i]===null?"":(answers[i]===QUESTIONS[i].ans?" r":" w"));
+    d.textContent = i+1;
+    d.title = `第 ${i+1} 題`;
+    d.onclick = ()=>{ cur=k; render(); };
+    dots.appendChild(d);
+  });
+}
+
+function choose(qi,oi){
+  if(answers[qi]!==null) return;
+  answers[qi]=oi;
+  render();
+}
+
+function showResult(){
+  $("quiz").classList.add("hidden");
+  $("result").classList.remove("hidden");
+  const total = QUESTIONS.length;
+  const score = QUESTIONS.filter((q,i)=>answers[i]===q.ans).length;
+  $("finalScore").textContent = `${score} / ${total}`;
+  $("comment").textContent = score===total ? "全部答對！W1 觀念很穩 🎉"
+    : score>=8 ? "很棒！再看一下答錯的觀念就完美了。"
+    : score>=5 ? "有基礎了，針對下面答錯的題目再複習一次吧。"
+    : "建議回頭看一次 W1 心智圖，再挑戰一次！";
+  const wrong = QUESTIONS.map((q,i)=>({q,i})).filter(x=>answers[x.i]!==x.q.ans);
+  $("retryWrong").classList.toggle("hidden", wrong.length===0);
+  $("review").innerHTML = wrong.length===0 ? "" :
+    `<h3>需要複習的題目</h3><ol>` + wrong.map(x=>
+      `<li>第 ${x.i+1} 題（${x.q.concept}）：${x.q.q}<br><span class="ans">正確答案：${L[x.q.ans]}. ${x.q.opts[x.q.ans]}</span></li>`
+    ).join("") + `</ol>`;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+$("prev").onclick = ()=>{ if(cur>0){cur--;render();} };
+$("next").onclick = ()=>{
+  if(cur<order.length-1){cur++;render();}
+  else if(order.every(i=>answers[i]!==null)) showResult();
+  else { const k = order.findIndex(i=>answers[i]===null); cur=k; render(); }
+};
+$("restart").onclick = ()=>{
+  answers = answers.map(()=>null); order = QUESTIONS.map((_,i)=>i); cur=0;
+  $("result").classList.add("hidden"); $("quiz").classList.remove("hidden"); render();
+};
+$("retryWrong").onclick = ()=>{
+  const wrong = QUESTIONS.map((q,i)=>i).filter(i=>answers[i]!==QUESTIONS[i].ans);
+  wrong.forEach(i=>answers[i]=null);
+  order = wrong; cur=0;
+  $("result").classList.add("hidden"); $("quiz").classList.remove("hidden"); render();
+};
+
+render();
+</script>
+</body>
+</html>
