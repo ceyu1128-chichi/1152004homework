@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-label="閃電徽章">
-  <circle cx="150" cy="150" r="118" fill="#fffdf9" stroke="#4a5a8c" stroke-width="6"/>
-  <circle cx="150" cy="150" r="100" fill="none" stroke="#e3dfd5" stroke-width="3" stroke-dasharray="4 8"/>
-  <path d="M166 66 L108 164 H146 L130 236 L194 130 H154 Z" fill="#4a5a8c" stroke="#2b2d3a" stroke-width="4" stroke-linejoin="round"/>
-  <circle cx="150" cy="22" r="12" fill="#FAD246"/>
-  <circle cx="278" cy="150" r="12" fill="#8E6CC9"/>
-  <circle cx="150" cy="278" r="12" fill="#235AAA"/>
-  <circle cx="22" cy="150" r="12" fill="#DC3C41"/>
-</svg>
