@@ -1,0 +1,201 @@
+/* =========================================================
+   theme.css — W2 推坑專頁的衣服 👕
+   這週一樣先借穿，你只要寫 HTML。
+   換配色：到 index.html 把 <body class="theme-milktea">
+   改成 theme-milktea（奶茶）/ theme-matcha（抹茶）/ theme-taro（芋頭）
+   ========================================================= */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bricolage+Grotesque:opsz,wght@12..96,800&display=swap");
+/* 🆕 新增：標題用的帥氣英文字體 Oswald（@import 規定要放在檔案最上面，所以加在這裡） */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&display=swap");
+
+/* 每個主題只換這幾個顏色 */
+body.theme-milktea { --bg: #fbf3e8; --card: #fffaf3; --ink: #3b2418; --soft: #8a6a55; --main: #c0703b; --pop: #ff6b6b; --line: #ead8c2; }
+body.theme-matcha  { --bg: #eef3e6; --card: #fbfdf7; --ink: #1f2e1a; --soft: #5f735a; --main: #4f8a3a; --pop: #e8a33d; --line: #d3e0c6; }
+body.theme-taro    { --bg: #f2ecf8; --card: #fcfaff; --ink: #2c1f3d; --soft: #6e5f84; --main: #8a5cc4; --pop: #ff8fb1; --line: #e0d4ef; }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; line-height: 1.85; font-size: 17px;
+}
+a { color: var(--main); font-weight: 700; text-underline-offset: 4px; }
+img { max-width: 100%; }
+
+/* ---------- header：大封面 ---------- */
+header {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 24px 48px;
+  padding: 56px 20px 40px; text-align: left;
+  background: radial-gradient(circle at 80% 20%, var(--card), var(--bg) 70%);
+}
+header img { width: 220px; filter: drop-shadow(0 16px 24px rgba(0,0,0,.15)); }
+header h1 { font-family: "Bricolage Grotesque", "Noto Sans TC", sans-serif; font-size: clamp(2.2rem, 6vw, 3.6rem); line-height: 1.15; margin: 0 0 8px; font-weight: 900; }
+header p { margin: 0; color: var(--soft); font-size: 1.1rem; max-width: 26em; }
+header strong { color: var(--pop); }
+
+/* ---------- nav：黏在上面的選單 ---------- */
+nav { position: sticky; top: 0; z-index: 5; background: var(--ink); padding: 10px 16px; }
+nav ul { list-style: none; margin: 0 auto; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; max-width: 980px; }
+nav a { color: var(--card); text-decoration: none; padding: 4px 14px; border-radius: 999px; font-weight: 500; display: inline-block; }
+nav a:hover { background: var(--main); color: #fff; }
+
+/* ---------- main + aside：兩欄 ---------- */
+main { max-width: 980px; margin: 0 auto; padding: 32px 20px 48px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+@media (min-width: 860px) { main { grid-template-columns: minmax(0, 1fr) 280px; align-items: start; } aside { position: sticky; top: 70px; grid-column: 2; grid-row: 1 / span 6; } }
+section, aside, article {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 26px 28px;
+}
+section { scroll-margin-top: 70px; }
+h2 { margin: 0 0 12px; font-size: 1.45rem; display: flex; align-items: center; gap: 10px; }
+h2::after { content: ""; flex: 1; height: 2px; background: var(--line); }
+h3 { margin: 0 0 6px; color: var(--main); }
+p { margin: 8px 0; }
+ol, ul { padding-left: 1.4em; }
+li { margin: 6px 0; }
+li::marker { color: var(--main); font-weight: 700; }
+article { background: var(--bg); border-style: dashed; margin-top: 14px; }
+
+/* aside 側欄 */
+aside h2 { font-size: 1.1rem; }
+aside ul { list-style: none; padding: 0; }
+aside li { padding: 8px 12px; background: var(--bg); border-radius: 10px; }
+
+/* ---------- table 排行榜 ---------- */
+table { width: 100%; border-collapse: collapse; font-size: .95rem; overflow: hidden; border-radius: 12px; }
+caption { text-align: left; color: var(--soft); padding-bottom: 8px; font-size: .9rem; }
+th { background: var(--main); color: #fff; text-align: left; padding: 10px 12px; }
+td { padding: 10px 12px; border-bottom: 1px solid var(--line); }
+tr:nth-child(even) td { background: var(--bg); }
+.table-scroll, section:has(table) { overflow-x: auto; }
+
+/* ---------- form 留言表單 ---------- */
+form { display: grid; gap: 14px; }
+label { font-weight: 700; display: block; margin-bottom: 4px; }
+input[type="text"], input[type="email"], select, textarea {
+  width: 100%; font: inherit; padding: 10px 12px; border: 2px solid var(--line); border-radius: 10px; background: #fff; color: #222;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--main); }
+fieldset { border: 2px dashed var(--line); border-radius: 12px; padding: 10px 14px; }
+fieldset label { display: inline-flex; gap: 6px; align-items: center; font-weight: 500; margin-right: 14px; }
+legend { font-weight: 700; padding: 0 6px; }
+button {
+  font: inherit; font-weight: 700; padding: 12px 22px; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--pop); color: #fff; justify-self: start; box-shadow: 0 6px 0 rgba(0,0,0,.15);
+}
+button:active { transform: translateY(3px); box-shadow: 0 3px 0 rgba(0,0,0,.15); }
+
+/* ---------- footer ---------- */
+footer { text-align: center; padding: 28px 16px 40px; color: var(--soft); font-size: .9rem; }
+footer a { color: var(--soft); }
+
+/* =========================================================
+   🆕 以下全部是新增內容（老師的原始樣式都保留在上面，沒有刪改）
+   ========================================================= */
+
+/* 🆕 新增主題：theme-volta（溫和的米白＋灰藍，跟老師的三種主題用法一樣） */
+body.theme-volta { --bg: #f5f3ee; --card: #fffdf9; --ink: #2b2d3a; --soft: #6c6f80; --main: #4a5a8c; --pop: #4a5a8c; --line: #e3dfd5; }
+
+/* 🆕 成員代表色：之後所有新增功能都用這四個顏色 */
+body { --c-kanato: #FAD246; --c-hibari: #8E6CC9; --c-akira: #235AAA; --c-seraph: #DC3C41; }
+
+/* 🆕 帥氣字體：英文用 Oswald，中文自動退回 Noto Sans TC */
+header h1, h2, .ticket-title { font-family: "Oswald", "Noto Sans TC", sans-serif; letter-spacing: .03em; }
+header h1 { font-weight: 700; }
+h2 { font-weight: 700; }
+
+/* ---------- 🆕 新增功能 1：選推し換主色 ---------- */
+/* radio 藏起來（功能還在），按下面的 label 就等於選 radio */
+.oshi-radio { position: absolute; opacity: 0; pointer-events: none; }
+body:has(#oshi-k:checked) { --main: #C9A012;          --pop: #C9A012; }  /* 黃色當文字太淡，主色用深一點的黃 */
+body:has(#oshi-h:checked) { --main: var(--c-hibari); --pop: var(--c-hibari); }
+body:has(#oshi-a:checked) { --main: var(--c-akira);  --pop: var(--c-akira); }
+body:has(#oshi-s:checked) { --main: var(--c-seraph); --pop: var(--c-seraph); }
+
+.oshi-picker { max-width: 980px; margin: 24px auto 0; padding: 0 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.oshi-picker span { color: var(--soft); font-size: .95rem; }
+.pick { display: inline-block; margin: 0; cursor: pointer; padding: 4px 16px; border-radius: 999px; font-weight: 700; font-size: .95rem;
+  border: 2px solid var(--pc); color: var(--ink); background: var(--card); transition: .2s; }
+.pick:hover { background: color-mix(in srgb, var(--pc) 15%, var(--card)); }
+.pick-all { --pc: var(--ink); }
+.pick-k { --pc: var(--c-kanato); }
+.pick-h { --pc: var(--c-hibari); }
+.pick-a { --pc: var(--c-akira); }
+.pick-s { --pc: var(--c-seraph); }
+/* 被選中的按鈕塗滿自己的代表色 */
+body:has(#oshi-all:checked) .pick-all,
+body:has(#oshi-k:checked) .pick-k,
+body:has(#oshi-h:checked) .pick-h,
+body:has(#oshi-a:checked) .pick-a,
+body:has(#oshi-s:checked) .pick-s { background: var(--pc); color: #fff; }
+
+/* ---------- 🆕 新增功能 2：成員資料抽屜（details） ---------- */
+.member-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; align-items: start; }
+.member { background: var(--bg); border: 2px solid var(--line); border-left: 6px solid var(--mc); border-radius: 12px; padding: 12px 16px; }
+.member[open] { border-color: var(--mc); }
+.member summary { cursor: pointer; font-weight: 700; font-size: 1.05rem; }
+.member summary::marker { color: var(--mc); }
+.member small { display: block; color: var(--soft); font-weight: 400; font-size: .8rem; font-family: "Oswald", sans-serif; letter-spacing: .05em; }
+.member p { font-size: .95rem; }
+.member-k { --mc: var(--c-kanato); }
+.member-h { --mc: var(--c-hibari); }
+.member-a { --mc: var(--c-akira); }
+.member-s { --mc: var(--c-seraph); }
+
+/* ---------- 🆕 新增功能 3：MV 放映室（iframe） ---------- */
+.video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+figure { margin: 0; }
+iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 12px; }
+figcaption { color: var(--soft); font-size: .9rem; margin-top: 6px; }
+
+/* ---------- 🆕 新增功能 4：演唱會門票卡片 ---------- */
+.ticket { display: flex; flex-wrap: wrap; border: 2px solid var(--main); border-radius: 14px; overflow: hidden; background: var(--card); margin: 8px 0 12px; }
+.ticket-main { flex: 1 1 280px; padding: 18px 22px; }
+.ticket-label { margin: 0; color: var(--soft); font-size: .8rem; letter-spacing: .2em; font-weight: 700; }
+.ticket-title { margin: 0 0 6px; font-size: 2.4rem; line-height: 1.1; color: var(--main); }
+.ticket dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; margin: 0; }
+.ticket dt { font-weight: 700; }
+.ticket dd { margin: 0; }
+.ticket-stub { flex: 0 0 150px; padding: 18px 14px; border-left: 2px dashed var(--main); background: var(--bg); text-align: center; display: flex; flex-direction: column; justify-content: center; }
+.ticket-stub p { margin: 0; font-family: "Oswald", sans-serif; font-size: 1.3rem; line-height: 1.2; color: var(--main); }
+.ticket-stub .hashtag { font-family: inherit; font-size: .75rem; color: var(--soft); margin-top: 8px; word-break: break-all; }
+
+/* ---------- 🆕 新增功能 5：新手 Q&A（details） ---------- */
+#faq details { border-bottom: 1px solid var(--line); padding: 8px 0; }
+#faq summary { cursor: pointer; font-weight: 700; }
+#faq summary::marker { color: var(--main); }
+#faq details p { color: var(--soft); }
+
+/* 🆕 手機：導覽選單改成一排可以左右滑 */
+@media (max-width: 640px) {
+  nav ul { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; }
+  nav li { flex: 0 0 auto; }
+}
+
+/* 🆕 版面調整：新增區塊後 main 裡有 8 個 section，側欄要跨 8 列，留言板才不會被擠到右邊 */
+@media (min-width: 860px) { aside { grid-row: 1 / span 8; } }
+
+/* 🆕 側欄有兩個標題（官方連結、專輯試聽），第二個標題上面留點空間 */
+aside ul + h2 { margin-top: 20px; }
+aside a { overflow-wrap: anywhere; }
+
+/* 🆕 導覽列改成跟著主題色：選哪個推し，導覽列就變那個顏色 */
+nav { background: var(--main); transition: background .3s; }
+nav a { color: #fff; }
+nav a:hover { background: rgba(255, 255, 255, .25); color: #fff; }
+
+/* 🆕 成員大頭照 */
+.member summary { display: flex; align-items: center; gap: 12px; list-style: none; }
+.member summary::-webkit-details-marker { display: none; }
+.avatar {
+  width: 64px; height: 64px; flex: 0 0 64px;
+  border-radius: 50%; object-fit: cover;
+  border: 3px solid var(--mc); background: var(--card);
+}
+.member-name { display: flex; flex-direction: column; }
+/* 🆕 選奏斗時導覽列是黃色，白字看不清楚，改成深色字 */
+body:has(#oshi-k:checked) nav a,
+body:has(#oshi-k:checked) nav a:hover { color: var(--ink); }
+
+/* 🆕 成員抽屜右邊加 ＋／－，讓人知道可以點開 */
+.member summary::after { content: "＋"; margin-left: auto; color: var(--mc); font-weight: 900; }
+.member[open] summary::after { content: "－"; }
